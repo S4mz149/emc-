@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Analyse AFP</title>
+
+<style>
+
+/* ===== BASE ===== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5f0e6;
+    overflow: hidden;
+}
+
+/* ===== SLIDER ===== */
+.slider {
+    display: flex;
+    width: 300%;
+    height: 100vh;
+    transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.slide {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== CARD ===== */
+.card {
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    width: 75%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+h2 {
+    margin-bottom: 25px;
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    text-align: left;
+}
+
+/* ===== LIENS ===== */
+.link-btn {
+    color: #6b4c3b;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-btn:hover {
+    text-decoration: underline;
+}
+
+/* ===== TOOLTIP ===== */
+.info {
+    position: relative;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.tooltip {
+    visibility: hidden;
+    background: #222;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 6px;
+    position: absolute;
+    bottom: 25px;
+    left: 0;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.info:hover .tooltip {
+    visibility: visible;
+}
+
+/* ===== MINDMAP ===== */
+.mindmap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.node {
+    background: #fafafa;
+    padding: 15px;
+    border-radius: 12px;
+    flex: 1 1 45%;
+    border: 1px solid #eee;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.6s forwards;
+}
+
+.node:hover {
+    transform: scale(1.05);
+    background: #f0ebe0;
+}
+
+/* animation delay */
+.node:nth-child(1){ animation-delay: 0.1s; }
+.node:nth-child(2){ animation-delay: 0.2s; }
+.node:nth-child(3){ animation-delay: 0.3s; }
+.node:nth-child(4){ animation-delay: 0.4s; }
+.node:nth-child(5){ animation-delay: 0.5s; }
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== BUTTONS ===== */
+.buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    background: #222;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+button:hover {
+    background: #444;
+}
+
+/* ===== BULLE ===== */
+.bubble {
+    position: fixed;
+    bottom: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    padding: 8px 14px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    font-size: 13px;
+    max-width: 220px;
+    text-align: center;
+}
+
+/* petite flèche vers le bas */
+.bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+}
+</style>
+</head>
+
+<body>
+
+<div class="slider" id="slider">
+
+<!-- ===== SLIDE 1 : TABLEAU ===== -->
+<div class="slide">
+<div class="card">
+<h2>📊 Tableau des sources</h2>
+
+<table>
+<tr>
+<th>Source</th>
+<th>Type de site</th>
+<th>Auteur / statut</th>
+<th>Angle / arguments</th>
+<th>Intention</th>
+<th>Lien</th>
+</tr>
+
+<tr>
+<td>SciencesPo</td>
+<td>Site institutionnel</td>
+<td>Institution
+<span class="info">ℹ
+<span class="tooltip">SciencesPo</span>
+</span>
+</td>
+<td>Données chiffrées et analyse historique (faits vérifiés)</td>
+<td>Diffuser des connaissances</td>
+<td><a href="https://www.sciencespo.fr/enjeumondial/fr/media/stocks-d-armes-nucleaires-1945-2017.html" target="_blank" class="link-btn">Voir</a></td>
+</tr>
+
+<tr>
+<td>France24</td>
+<td>Réseau social (vidéo)</td>
+<td>Journalistes
+<span class="info">ℹ
+<span class="tooltip">Rédaction France24</span>
+</span>
+</td>
+<td>Présentation de faits avec explication simplifiée</td>
+<td>Informer rapidement</td>
+<td><a href="https://www.youtube.com/watch?v=lNb0mfD6BeQ" target="_blank" class="link-btn">Voir</a></td>
+</tr>
+
+<tr>
+<td>Le Monde</td>
+<td>Site d’information</td>
+<td>Expert
+<span class="info">ℹ
+<span class="tooltip">Joseph Cirincione</span>
+</span>
+</td>
+<td>Analyse politique avec arguments et opinion</td>
+<td>Influencer et faire réfléchir</td>
+<td><a href="https://www.lemonde.fr/idees/article/2026/02/18/joseph-cirincione-96-des-tetes-nucleaires-dans-le-monde-sont-desormais-entre-les-mains-de-leaders-autoritaires_6667189_3232.html" target="_blank" class="link-btn">Voir</a></td>
+</tr>
+
+<tr>
+<td>Euronews</td>
+<td>Site d’information</td>
+<td>Journalistes
+<span class="info">ℹ
+<span class="tooltip">AFP / Euronews</span>
+</span>
+</td>
+<td>Faits et données chiffrées</td>
+<td>Informer</td>
+<td><a href="https://fr.euronews.com/2023/03/29/armes-nucleaires-hausse-du-nombre-dogives-pretes-a-lemploi-dans-le-monde" target="_blank" class="link-btn">Voir</a></td>
+</tr>
+
+<tr>
+<td>France24</td>
+<td>Vidéo</td>
+<td>Journalistes
+<span class="info">ℹ
+<span class="tooltip">France24</span>
+</span>
+</td>
+<td>Résumé des faits avec simplification</td>
+<td>Informer</td>
+<td><a href="https://www.youtube.com/watch?v=AjmD8aY8c90" target="_blank" class="link-btn">Voir</a></td>
+</tr>
+
+</table>
+</div>
+</div>
+
+<!-- ===== SLIDE 2 : POINTS COMMUNS ===== -->
+<div class="slide">
+<div class="card">
+<h2>🧠 Points communs</h2>
+
+<div class="mindmap">
+<div class="node">Même information : augmentation des armes nucléaires</div>
+<div class="node">Source commune : AFP</div>
+<div class="node">Présence de données chiffrées</div>
+<div class="node">Sujet international lié aux tensions</div>
+<div class="node">Situation jugée préoccupante</div>
+<div class="node">Objectif principal : informer</div>
+</div>
+
+</div>
+</div>
+
+<!-- ===== SLIDE 3 : DIFFÉRENCES ===== -->
+<div class="slide">
+<div class="card">
+<h2>🧠 Différences</h2>
+
+<div class="mindmap">
+<div class="node">Certains médias détaillent avec chiffres et graphiques, d’autres restent plus simples</div>
+<div class="node">Certains utilisent des exemples concrets, d’autres restent théoriques</div>
+<div class="node">Certains adoptent un ton neutre, d’autres insistent sur le danger</div>
+<div class="node">Certains se concentrent sur la politique, d’autres sur les populations ou le militaire</div>
+<div class="node">Certains proposent une analyse approfondie, d’autres reprennent simplement les faits</div>
+<div class="node">Certains formats sont des articles, d’autres des vidéos</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<!-- BOUTONS -->
+<div class="buttons">
+<button onclick="prevSlide()">⬅</button>
+<button onclick="nextSlide()">➡</button>
+</div>
+
+<!-- BULLE -->
+<div class="bubble">
+⬅ Glisser ou utiliser les flèches ➡
+</div>
+
+<script>
+let index = 0;
+let startX = 0;
+let endX = 0;
+
+const slider = document.getElementById("slider");
+
+function updateSlide() {
+    slider.style.transform = "translateX(-" + (index * 100) + "vw)";
+}
+
+function nextSlide() {
+    if (index < 2) index++;
+    updateSlide();
+}
+
+function prevSlide() {
+    if (index > 0) index--;
+    updateSlide();
+}
+
+/* SWIPE SOURIS */
+slider.addEventListener("mousedown", (e) => {
+    startX = e.clientX;
+});
+
+slider.addEventListener("mouseup", (e) => {
+    endX = e.clientX;
+    handleSwipe();
+});
+
+/* SWIPE TACTILE */
+slider.addEventListener("touchstart", (e) => {
+    startX = e.touches[0].clientX;
+});
+
+slider.addEventListener("touchend", (e) => {
+    endX = e.changedTouches[0].clientX;
+    handleSwipe();
+});
+
+function handleSwipe() {
+    if (startX - endX > 50) nextSlide();
+    if (endX - startX > 50) prevSlide();
+}
+</script>
+
+</body>
+</html>
