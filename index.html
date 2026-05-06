@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Analyse AFP</title>
-
 <style>
-
 /* ===== BASE ===== */
 body {
     margin: 0;
@@ -17,7 +15,7 @@ body {
 /* ===== SLIDER ===== */
 .slider {
     display: flex;
-    width: 300%;
+    width: 200%;
     height: 100vh;
     transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1);
 }
@@ -37,6 +35,7 @@ body {
     width: 75%;
     box-shadow: 0 15px 40px rgba(0,0,0,0.1);
     transition: transform 0.3s;
+    text-align: center;
 }
 
 .card:hover {
@@ -47,19 +46,36 @@ h2 {
     margin-bottom: 25px;
 }
 
-/* ===== TABLE ===== */
+/* ===== IMAGES ===== */
+.img {
+    max-width: 100%;
+    max-height: 60vh;
+    border-radius: 15px;
+    transition: transform 0.4s ease;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    object-fit: contain;
+}
+
+.img:hover {
+    transform: scale(1.05);
+}
+
+/* ===== TABLEAU ===== */
 table {
     width: 100%;
     border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
 }
 
 th, td {
     padding: 12px;
+    text-align: left;
     border-bottom: 1px solid #ddd;
 }
 
 th {
-    text-align: left;
+    background-color: #f2f2f2;
 }
 
 /* ===== LIENS ===== */
@@ -97,44 +113,7 @@ th {
     visibility: visible;
 }
 
-/* ===== MINDMAP ===== */
-.mindmap {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.node {
-    background: #fafafa;
-    padding: 15px;
-    border-radius: 12px;
-    flex: 1 1 45%;
-    border: 1px solid #eee;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeIn 0.6s forwards;
-}
-
-.node:hover {
-    transform: scale(1.05);
-    background: #f0ebe0;
-}
-
-/* animation delay */
-.node:nth-child(1){ animation-delay: 0.1s; }
-.node:nth-child(2){ animation-delay: 0.2s; }
-.node:nth-child(3){ animation-delay: 0.3s; }
-.node:nth-child(4){ animation-delay: 0.4s; }
-.node:nth-child(5){ animation-delay: 0.5s; }
-
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ===== BUTTONS ===== */
+/* ===== BOUTONS ===== */
 .buttons {
     position: fixed;
     bottom: 20px;
@@ -170,7 +149,6 @@ button:hover {
     text-align: center;
 }
 
-/* petite flèche vers le bas */
 .bubble::after {
     content: "";
     position: absolute;
@@ -187,12 +165,10 @@ button:hover {
 <body>
 
 <div class="slider" id="slider">
-
 <!-- ===== SLIDE 1 : TABLEAU ===== -->
 <div class="slide">
 <div class="card">
 <h2>📊 Tableau des sources</h2>
-
 <table>
 <tr>
 <th>Source</th>
@@ -267,45 +243,17 @@ button:hover {
 <td>Informer</td>
 <td><a href="https://www.youtube.com/watch?v=AjmD8aY8c90" target="_blank" class="link-btn">Voir</a></td>
 </tr>
-
 </table>
 </div>
 </div>
 
-<!-- ===== SLIDE 2 : POINTS COMMUNS ===== -->
+<!-- ===== SLIDE 2 : ANALYSE ===== -->
 <div class="slide">
 <div class="card">
-<h2>🧠 Points communs</h2>
-
-<div class="mindmap">
-<div class="node">Même information : augmentation des armes nucléaires</div>
-<div class="node">Source commune : AFP</div>
-<div class="node">Présence de données chiffrées</div>
-<div class="node">Sujet international lié aux tensions</div>
-<div class="node">Situation jugée préoccupante</div>
-<div class="node">Objectif principal : informer</div>
-</div>
-
+<h2>🧠 Analyse</h2>
+<img src="image3.png" class="img" alt="analyse">
 </div>
 </div>
-
-<!-- ===== SLIDE 3 : DIFFÉRENCES ===== -->
-<div class="slide">
-<div class="card">
-<h2>🧠 Différences</h2>
-
-<div class="mindmap">
-<div class="node">Certains médias détaillent avec chiffres et graphiques, d’autres restent plus simples</div>
-<div class="node">Certains utilisent des exemples concrets, d’autres restent théoriques</div>
-<div class="node">Certains adoptent un ton neutre, d’autres insistent sur le danger</div>
-<div class="node">Certains se concentrent sur la politique, d’autres sur les populations ou le militaire</div>
-<div class="node">Certains proposent une analyse approfondie, d’autres reprennent simplement les faits</div>
-<div class="node">Certains formats sont des articles, d’autres des vidéos</div>
-</div>
-
-</div>
-</div>
-
 </div>
 
 <!-- BOUTONS -->
@@ -321,9 +269,6 @@ button:hover {
 
 <script>
 let index = 0;
-let startX = 0;
-let endX = 0;
-
 const slider = document.getElementById("slider");
 
 function updateSlide() {
@@ -331,38 +276,13 @@ function updateSlide() {
 }
 
 function nextSlide() {
-    if (index < 2) index++;
+    if (index < 1) index++;
     updateSlide();
 }
 
 function prevSlide() {
     if (index > 0) index--;
     updateSlide();
-}
-
-/* SWIPE SOURIS */
-slider.addEventListener("mousedown", (e) => {
-    startX = e.clientX;
-});
-
-slider.addEventListener("mouseup", (e) => {
-    endX = e.clientX;
-    handleSwipe();
-});
-
-/* SWIPE TACTILE */
-slider.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-});
-
-slider.addEventListener("touchend", (e) => {
-    endX = e.changedTouches[0].clientX;
-    handleSwipe();
-});
-
-function handleSwipe() {
-    if (startX - endX > 50) nextSlide();
-    if (endX - startX > 50) prevSlide();
 }
 </script>
 
